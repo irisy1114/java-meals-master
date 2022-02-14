@@ -33,41 +33,52 @@ public class Cookbook {
     }
 
     public String doControlBreak() {
-
-        String breakfast = mealCaloriesInformation(BREAKFAST);
-        String dessert = mealCaloriesInformation(DESSERT);
-        String dinner = mealCaloriesInformation(DINNER);
-        String lunch = mealCaloriesInformation(LUNCH);
-
-        return breakfast + "\n" + dessert + "\n" + dinner + "\n" + lunch;
-    }
-
-    public String mealCaloriesInformation(MealType mealType) {
-
-        List<Integer> list = new ArrayList<>();
+        List<Integer> breakfastList = new ArrayList<>();
+        List<Integer> dessertList = new ArrayList<>();
+        List<Integer> dinnerList = new ArrayList<>();
+        List<Integer> lunchList = new ArrayList<>();
 
         for(Meal item: mealList) {
-            if(item.getMealType() == mealType) {
-                list.add(item.getCalories());
+            if(item.getMealType() == BREAKFAST) {
+                breakfastList.add(item.getCalories());
             }
+            else if(item.getMealType() == DESSERT) {
+                dessertList.add(item.getCalories());
+            }
+            else if(item.getMealType() == DINNER) {
+                dinnerList.add(item.getCalories());
+            }
+            else
+                lunchList.add(item.getCalories());
         }
+
+        String breakfast = mealCaloriesInfo("Breakfast", breakfastList);
+        String dessert = mealCaloriesInfo("Dessert", dessertList);
+        String dinner = mealCaloriesInfo("Dinner", dinnerList);
+        String lunch = mealCaloriesInfo("Lunch", lunchList);
+
+        return breakfast + "\n" + dessert + "\n" + dinner + "\n" + lunch;
+
+    }
+
+    public String mealCaloriesInfo(String mealType, List<Integer> mealTypeList) {
 
         int sum = 0;
-        for (int i : list) {
+        for (int i : mealTypeList) {
             sum += i;
         }
-        double average = sum / list.size();
-        int min = Collections.min(list);
-        int max = Collections.max(list);
+        double average = sum / mealTypeList.size();
+        int min = Collections.min(mealTypeList);
+        int max = Collections.max(mealTypeList);
 
         // get the median of the list
-        Collections.sort(list);
+        Collections.sort(mealTypeList);
         int median;
-        if(list.size() % 2 == 1) {
-            median = list.get((list.size() + 1) / 2 - 1);
+        if(mealTypeList.size() % 2 == 1) {
+            median = mealTypeList.get((mealTypeList.size() + 1) / 2 - 1);
         }
         else {
-            median = ((list.get(list.size() / 2 - 1))) / 2 + (list.get(list.size() / 2)) / 2;
+            median = ((mealTypeList.get(mealTypeList.size() / 2 - 1))) / 2 + (mealTypeList.get(mealTypeList.size() / 2)) / 2;
         }
 
         return "Meal Type: " + mealType + "Total Calories: " + sum + " Mean: " + average + " Min: " + min + " Max: " + max + " Median: " + median;
